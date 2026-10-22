@@ -2,3 +2,4 @@ assets/photos/*
 !assets/photos/.gitkeep
 .DS_Store
 Thumbs.db
+.shots*
