@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>彩蛋 · 生日小站</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .play-section-title {
+      text-align: center;
+      color: var(--cream);
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin: 54px 0 6px;
+    }
+    .play-sub { text-align: center; color: rgba(255,247,236,0.75); font-size: 0.95rem; }
+
+    /* 隐藏彩蛋按钮：藏在角落的小星星 */
+    .hidden-star {
+      position: fixed;
+      bottom: 84px;
+      right: 24px;
+      z-index: 140;
+      background: none;
+      border: none;
+      font-size: 1.15rem;
+      opacity: 0.25;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .hidden-star:hover { opacity: 1; transform: scale(1.4) rotate(20deg); }
+
+    .win-banner {
+      display: none;
+      margin: 22px auto 0;
+      max-width: 560px;
+      text-align: center;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: var(--ink);
+      font-weight: 800;
+      padding: 14px 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 22px rgba(255, 94, 148, 0.45);
+    }
+  </style>
+</head>
+<body data-title="彩蛋">
+  <main class="play-stage">
+    <h1 class="glitter" style="font-size: clamp(1.8rem, 5vw, 2.6rem);">🎁 玩个小游戏，赢隐藏惊喜</h1>
+    <p class="subtitle">据说通关的人会看到一段特别的话…</p>
+
+    <!-- ① 砸金蛋 -->
+    <div class="play-section-title">① 盲盒金蛋</div>
+    <p class="play-sub">点击金蛋，随机掉落祝福 / 任务 / 惊喜</p>
+    <div class="eggs-lane" id="eggs"></div>
+    <div class="egg-result" id="egg-result">👆 试试看，会掉出什么呢？</div>
+
+    <!-- ② 翻牌配对 -->
+    <div class="play-section-title">② 记忆翻牌</div>
+    <p class="play-sub">找出所有 8 对 emoji，通关解锁最终惊喜</p>
+    <div class="memory-grid" id="memory"></div>
+    <div class="play-hint" id="mem-hint">已配对 0 / 8</div>
+    <div class="win-banner" id="win-banner">🏆 通关成功！最终惊喜已解锁 🎊</div>
+
+    <!-- 隐藏彩蛋入口 -->
+    <button class="hidden-star" id="hidden-star" title="…">⭐</button>
+  </main>
+
+  <!-- 惊喜弹窗 -->
+  <div class="surprise-mask" id="surprise">
+    <div class="surprise-box">
+      <div class="big" id="sp-big">💌</div>
+      <h3 id="sp-title"></h3>
+      <p id="sp-text"></p>
+      <p style="margin-top: 18px;"><button class="btn" id="sp-close">收下啦</button></p>
+      <p style="margin-top: 10px; font-size: 0.82rem; color: #c98a5a;">（悄悄话：在首页连点蛋糕 5 次，也能打开这个弹窗哦）</p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    /* ============ 惊喜弹窗 ============ */
+    const mask = document.getElementById("surprise");
+
+    function showSurprise(big, title, text) {
+      document.getElementById("sp-big").textContent = big;
+      document.getElementById("sp-title").textContent = title;
+      document.getElementById("sp-text").textContent = text;
+      mask.classList.add("open");
+      SITE.confetti(160);
+    }
+
+    document.getElementById("sp-close").onclick = () => mask.classList.remove("open");
+    mask.addEventListener("click", (e) => e.target === mask && mask.classList.remove("open"));
+
+    /* ============ ① 盲盒金蛋 ============ */
+    const EGG_POOL = [
+      { icon: "🎂", text: "祝福掉落：愿你的钱包永远比脸圆，快乐永远比烦恼多！" },
+      { icon: "🍀", text: "好运掉落：接下来一个月，桃花运、事业运、躺赢运全部 +1！" },
+      { icon: "☕", text: "小任务：现在去给自己倒一杯喜欢的饮料，回来继续——这是愿望的一部分！" },
+      { icon: "📸", text: "小任务：和身边的人击个掌，把今天的好心情传递出去！" },
+      { icon: "💌", text: "悄悄话：认识你真好，新的一岁也要闪闪发光哦。" },
+      { icon: "🎫", text: "兑换券：凭此券可向我兑换「陪你做任何一件小事」一次，永久有效！" },
+      { icon: "🍰", text: "甜蜜掉落：愿你的生活像奶油蛋糕，甜而不腻，软软乎乎。" },
+      { icon: "⭐", text: "兑换券：凭此券可兑换「无条件原谅一次」，生日王者特权！" },
+    ];
+
+    const eggsEl = document.getElementById("eggs");
+    const eggResult = document.getElementById("egg-result");
+    const picks = [...EGG_POOL].sort(() => Math.random() - 0.5).slice(0, 4);
+
+    eggsEl.innerHTML = picks
+      .map((_, i) => `<button class="egg" data-i="${i}" title="金蛋 ${i + 1}">🥚</button>`)
+      .join("");
+
+    eggsEl.addEventListener("click", (e) => {
+      const egg = e.target.closest(".egg");
+      if (!egg || egg.disabled) return;
+      const item = picks[+egg.dataset.i];
+      egg.textContent = item.icon;
+      egg.disabled = true;
+      eggResult.innerHTML = `<span>${item.icon} ${item.text}</span>`;
+      SITE.confetti(60);
+    });
+
+    /* ============ ② 记忆翻牌 ============ */
+    const ICONS = ["🎂", "🎈", "🎁", "🕯️", "🌟", "🍰", "🎉", "💖"];
+    const memGrid = document.getElementById("memory");
+    const memHint = document.getElementById("mem-hint");
+    const winBanner = document.getElementById("win-banner");
+
+    const deck = [...ICONS, ...ICONS].sort(() => Math.random() - 0.5);
+    let first = null, lock = false, matched = 0;
+
+    memGrid.innerHTML = deck
+      .map((icon, i) => `
+        <button class="mcard" data-i="${i}" data-icon="${icon}">
+          <div class="inner">
+            <div class="face front">🎁</div>
+            <div class="face back">${icon}</div>
+          </div>
+        </button>`)
+      .join("");
+
+    memGrid.addEventListener("click", (e) => {
+      const card = e.target.closest(".mcard");
+      if (!card || lock || card.classList.contains("flipped")) return;
+
+      card.classList.add("flipped");
+
+      if (!first) {
+        first = card;
+        return;
+      }
+
+      // 第二张牌
+      if (first.dataset.icon === card.dataset.icon) {
+        first.classList.add("matched");
+        card.classList.add("matched");
+        first = null;
+        matched++;
+        memHint.textContent = `已配对 ${matched} / 8`;
+        if (matched === ICONS.length) {
+          winBanner.style.display = "block";
+          setTimeout(() => {
+            showSurprise(
+              "🎉",
+              `${CONFIG.name}，生日快乐！`,
+              "能和你分享这些时光，是我们最大的幸运。愿新的一岁里，你所有的愿望都掷地有声，所有的温柔都被温柔以待。往后的日子，请多指教！"
+            );
+          }, 600);
+        }
+      } else {
+        lock = true;
+        const a = first;
+        first = null;
+        setTimeout(() => {
+          a.classList.remove("flipped");
+          card.classList.remove("flipped");
+          lock = false;
+        }, 750);
+      }
+    });
+
+    /* ============ ③ 隐藏彩蛋：角落的小星星 ============ */
+    let starClicks = 0;
+    document.getElementById("hidden-star").addEventListener("click", () => {
+      starClicks++;
+      if (starClicks === 3) {
+        showSurprise(
+          "🤫",
+          "你发现了隐藏彩蛋！",
+          "既然你这么细心，那再送你一句：星星是夜晚的礼物，而你是我们的礼物。生日快乐！"
+        );
+        starClicks = 0;
+      }
+    });
+  </script>
+</body>
+</html>

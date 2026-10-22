@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>祝福 · 生日小站</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .wish-title { text-align: center; color: var(--cream); font-size: 1.1rem; margin: 18px 0 30px; opacity: 0.9; }
+    .cake-caption { text-align: center; color: rgba(255,247,236,0.7); font-size: 0.9rem; margin-top: 14px; }
+    .wish-card .quote-mark { font-size: 1.6rem; color: var(--pink-deep); margin-right: 10px; }
+    .wish-nav { display: flex; gap: 12px; justify-content: center; margin-top: 18px; }
+    .wish-done {
+      display: none;
+      text-align: center;
+      color: var(--gold);
+      font-size: 1.05rem;
+      margin-top: 16px;
+      letter-spacing: 1px;
+    }
+    .mic-tip { text-align: center; color: rgba(255,247,236,0.65); font-size: 0.85rem; margin-top: 26px; }
+  </style>
+</head>
+<body data-title="祝福">
+  <main>
+    <h1 class="glitter" style="font-size: clamp(1.8rem, 5vw, 2.6rem);">🕯️ 许个愿吧</h1>
+    <p class="wish-title">闭上眼，在心里默念你的愿望，然后<span style="color: var(--gold); font-weight: 700;">点蛋糕吹灭蜡烛</span></p>
+
+    <div class="wish-stage">
+      <div class="cake-visual" id="cake" title="点我吹蜡烛！">
+        <div class="flames" id="flames">
+          <div class="flame"></div>
+          <div class="flame"></div>
+          <div class="flame"></div>
+          <div class="flame"></div>
+          <div class="flame"></div>
+        </div>
+        <div class="cake-body">🎂</div>
+      </div>
+      <div class="cake-caption" id="caption">5 支蜡烛已点燃 ✨</div>
+    </div>
+
+    <div class="wish-done" id="wish-done">✨ 愿望已封存，一定会实现 ✨</div>
+
+    <div class="wish-card" id="wish-card"><span class="quote-mark">❝</span><span id="wish-text"></span></div>
+
+    <div class="wish-nav">
+      <button class="btn ghost" id="prev">上一条</button>
+      <button class="btn ghost" id="next">下一条</button>
+    </div>
+
+    <p class="mic-tip">小提示：右下角 🎵 可以开关生日歌～</p>
+  </main>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    const flames = [...document.querySelectorAll(".flame")];
+    const caption = document.getElementById("caption");
+    const done = document.getElementById("wish-done");
+    let blown = 0;
+
+    function blow() {
+      const remaining = flames.filter((f) => !f.classList.contains("out"));
+      if (remaining.length === 0) return;
+
+      // 每次点击吹灭 1~2 支，模拟真实吹气
+      remaining.slice(0, Math.random() < 0.5 ? 1 : 2).forEach((f, i) => {
+        setTimeout(() => {
+          f.classList.add("out");
+          // 一缕青烟
+          const smoke = document.createElement("div");
+          smoke.className = "smoke";
+          smoke.textContent = "💨";
+          smoke.style.left = 20 + Math.random() * 60 + "%";
+          document.getElementById("cake").appendChild(smoke);
+          smoke.style.animation = "smokeUp 1.2s ease-out forwards";
+          setTimeout(() => smoke.remove(), 1300);
+
+          blown++;
+          caption.textContent = `还剩 ${flames.length - blown} 支蜡烛…`;
+
+          if (blown === flames.length) {
+            caption.textContent = "🎉 全部吹灭！愿望许好了吗？";
+            done.style.display = "block";
+            SITE.confetti(180);
+          }
+        }, i * 180);
+      });
+    }
+
+    document.getElementById("cake").addEventListener("click", blow);
+
+    /* 祝福语轮播 */
+    const wishText = document.getElementById("wish-text");
+    const wishCard = document.getElementById("wish-card");
+    let idx = 0;
+
+    function showWish(i, instant) {
+      if (instant) {
+        wishText.textContent = CONFIG.wishes[i % CONFIG.wishes.length];
+        return;
+      }
+      wishCard.classList.add("fade");
+      setTimeout(() => {
+        wishText.textContent = CONFIG.wishes[i % CONFIG.wishes.length];
+        wishCard.classList.remove("fade");
+      }, 450);
+    }
+
+    showWish(0, true);
+    setInterval(() => { idx++; showWish(idx); }, 5000);
+    document.getElementById("prev").onclick = () => { idx = (idx - 1 + CONFIG.wishes.length) % CONFIG.wishes.length; showWish(idx); };
+    document.getElementById("next").onclick = () => { idx++; showWish(idx); };
+  </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>首页 · 生日小站</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .today-banner {
+      background: linear-gradient(135deg, var(--pink-deep), #ff9068);
+      color: #fff;
+      padding: 10px 26px;
+      border-radius: 999px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      box-shadow: 0 8px 24px rgba(255, 94, 148, 0.5);
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+    .quick-links { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; margin-top: 46px; }
+    .quick-card {
+      width: 200px;
+      padding: 26px 18px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(6px);
+      color: var(--cream);
+      text-decoration: none;
+      transition: 0.25s;
+      text-align: center;
+    }
+    .quick-card:hover { transform: translateY(-6px); background: rgba(255, 255, 255, 0.18); }
+    .quick-card .icon { font-size: 2.4rem; }
+    .quick-card h3 { margin: 10px 0 6px; }
+    .quick-card p { font-size: 0.86rem; opacity: 0.75; line-height: 1.5; }
+  </style>
+</head>
+<body data-title="首页">
+  <main>
+    <section class="hero">
+      <div class="cake">🎂</div>
+      <h1 class="glitter" id="hero-title"></h1>
+      <div id="today-slot"></div>
+      <p class="subtitle" id="hero-sub"></p>
+
+      <div class="countdown" id="countdown"></div>
+
+      <div class="hero-actions">
+        <a class="btn" href="wish.html">🎈 去许愿</a>
+        <a class="btn ghost" href="memories.html">📷 看回忆</a>
+      </div>
+
+      <div class="quick-links">
+        <a class="quick-card" href="wish.html">
+          <div class="icon">🕯️</div>
+          <h3>祝福页</h3>
+          <p>吹灭蜡烛许个愿<br />收下满满的祝福</p>
+        </a>
+        <a class="quick-card" href="memories.html">
+          <div class="icon">📸</div>
+          <h3>回忆页</h3>
+          <p>时间线 + 照片墙<br />一路走来的风景</p>
+        </a>
+        <a class="quick-card" href="play.html">
+          <div class="icon">🎁</div>
+          <h3>互动彩蛋页</h3>
+          <p>砸金蛋、翻牌配对<br />藏了惊喜等你发现</p>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- 连点蛋糕触发的惊喜弹窗 -->
+  <div class="surprise-mask" id="surprise">
+    <div class="surprise-box">
+      <div class="big">🎁</div>
+      <h3 id="sp-title">被你发现啦！</h3>
+      <p id="sp-text"></p>
+      <p style="margin-top: 18px;"><button class="btn" onclick="document.getElementById('surprise').classList.remove('open')">收下啦</button></p>
+      <p style="margin-top: 10px; font-size: 0.82rem; color: #c98a5a;">（「彩蛋」页还有小游戏和隐藏星星等你探索）</p>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    const { days, isToday, age } = getBirthdayInfo();
+
+    document.getElementById("hero-title").innerHTML =
+      `${CONFIG.emoji} 生日快乐，<br />${CONFIG.name}！`;
+
+    if (isToday) {
+      document.getElementById("today-slot").innerHTML = `<div class="today-banner">🎉 今天是正日子！${age} 岁快乐 🎉</div>`;
+      document.getElementById("hero-sub").textContent = "愿这一天比蛋糕还甜";
+      SITE.confetti(160);
+      // 正日子每 8 秒来一波小彩带
+      setInterval(() => SITE.confetti(40), 8000);
+    } else {
+      document.getElementById("today-slot").innerHTML = "";
+      document.getElementById("hero-sub").textContent =
+        days === 1 ? "明天就是生日啦，准备好接收祝福了吗？" : `距离生日还有 ${days} 天，先把祝福存起来～`;
+    }
+
+    document.getElementById("countdown").innerHTML = `
+      <div class="unit"><div class="num">${isToday ? 0 : days}</div><div class="label">天</div></div>
+      <div class="unit"><div class="num">${age}</div><div class="label">周岁</div></div>
+      <div class="unit"><div class="num">${CONFIG.timeline.length}</div><div class="label">段回忆</div></div>
+    `;
+
+    // 彩蛋：连点蛋糕 5 次触发惊喜弹窗
+    const cakeEl = document.querySelector(".hero .cake");
+    let cakeClicks = 0, clickTimer = null;
+    cakeEl.style.cursor = "pointer";
+    cakeEl.addEventListener("click", () => {
+      clearTimeout(clickTimer);
+      cakeClicks++;
+      clickTimer = setTimeout(() => (cakeClicks = 0), 2500);
+      if (cakeClicks >= 5) {
+        cakeClicks = 0;
+        SITE.confetti(120);
+        document.getElementById("sp-text").textContent =
+          `这是给 ${CONFIG.name} 的专属惊喜：愿你新的一岁，平安喜乐、万事胜意，天天都像过生日！`;
+        document.getElementById("surprise").classList.add("open");
+      }
+    });
+  </script>
+</body>
+</html>

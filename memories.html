@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>回忆 · 生日小站</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--cream);
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin: 60px 0 24px;
+      letter-spacing: 2px;
+    }
+    .section-label::before, .section-label::after { content: ""; height: 2px; flex: 1; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent); }
+    .hint-card {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px dashed rgba(255, 255, 255, 0.4);
+      border-radius: 16px;
+      color: rgba(255, 247, 236, 0.85);
+      padding: 18px 22px;
+      text-align: center;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+    .hint-card code { background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 6px; font-size: 0.9em; }
+  </style>
+</head>
+<body data-title="回忆">
+  <main>
+    <h1 class="glitter" style="font-size: clamp(1.8rem, 5vw, 2.6rem);">📷 我们的美好回忆</h1>
+    <p class="subtitle">时间线往下翻，照片墙点开可以放大</p>
+
+    <!-- 时间线（由 JS 依据 config.js 渲染） -->
+    <div class="timeline" id="timeline"></div>
+
+    <!-- 照片墙 -->
+    <div class="section-label">照片墙</div>
+    <div class="memories-grid" id="photo-wall"></div>
+    <div class="hint-card" id="photo-hint">
+      把照片放进 <code>assets/photos/</code> 文件夹，再在 <code>config.js</code> 里登记文件名即可上墙。<br />
+      每张照片可以写一句小注释，鼠标悬停会浮现～
+    </div>
+  </main>
+
+  <!-- 灯箱 -->
+  <div class="lightbox" id="lightbox">
+    <button class="lb-close" id="lb-close">✕</button>
+    <img id="lb-img" src="" alt="回忆照片" />
+    <div class="lb-cap" id="lb-cap"></div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+  <script>
+    /* ---- 时间线 ---- */
+    const tl = document.getElementById("timeline");
+    tl.innerHTML = CONFIG.timeline
+      .map(
+        (t) => `
+      <div class="tl-item">
+        <div class="tl-card">
+          <div class="date">${t.date}</div>
+          <h3>${t.title}</h3>
+          <p>${t.text}</p>
+        </div>
+      </div>`
+      )
+      .join("");
+
+    // 滚动入场动画已由 app.js 的 initFlow 统一处理（flow-reveal）
+
+    /* ---- 照片墙 ---- */
+    const wall = document.getElementById("photo-wall");
+    const capText = (p) => (typeof p === "string" ? "" : p.cap || "");
+    const srcOf = (p) => (typeof p === "string" ? "assets/photos/" + p : "assets/photos/" + p.src);
+
+    if (CONFIG.photos.length > 0) {
+      wall.innerHTML = CONFIG.photos
+        .map((p, i) => {
+          const src = srcOf(p);
+          const cap = capText(p);
+          return `
+          <div class="photo-tile" data-i="${i}">
+            <img src="${src}" alt="回忆 ${i + 1}" loading="lazy"
+                 onerror="this.remove()" />
+            ${cap ? `<div class="cap">${cap}</div>` : ""}
+          </div>`;
+        })
+        .join("");
+
+      const lb = document.getElementById("lightbox");
+      const openLb = (i) => {
+        const p = CONFIG.photos[i];
+        document.getElementById("lb-img").src = srcOf(p);
+        document.getElementById("lb-cap").textContent = capText(p) || `回忆 ${i + 1}`;
+        lb.classList.add("open");
+      };
+      wall.addEventListener("click", (e) => {
+        const tile = e.target.closest(".photo-tile");
+        if (!tile) return;
+        const img = tile.querySelector("img");
+        if (img) openLb(+tile.dataset.i);
+        // 文件缺失的瓷砖点击后给出提示
+        else {
+          const hint = document.getElementById("photo-hint");
+          hint.style.background = "rgba(255, 94, 148, 0.35)";
+          setTimeout(() => (hint.style.background = ""), 800);
+        }
+      });
+      document.getElementById("lb-close").onclick = () => lb.classList.remove("open");
+      lb.addEventListener("click", (e) => e.target === lb && lb.classList.remove("open"));
+    } else {
+      // 还没放照片：显示 8 个占位瓷砖
+      wall.innerHTML = Array.from({ length: 8 })
+        .map(
+          (_, i) => `
+        <div class="photo-tile">
+          <div class="tile-placeholder">
+            <div style="font-size: 2rem;">🖼️</div>
+            <div style="font-size: 0.85rem;">照片位 ${i + 1}</div>
+          </div>
+        </div>`
+        )
+        .join("");
+    }
+  </script>
+  <style>
+    /* 占位瓷砖补充样式 */
+    .memories-grid .photo-tile { cursor: default; }
+  </style>
+</body>
+</html>
