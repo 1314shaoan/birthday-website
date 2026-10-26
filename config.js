@@ -81,6 +81,13 @@ const CONFIG = {
     { side: "right", text: "我也是发现，你最近特别喜欢发这个小猪的表情包" },
     { side: "left", img: "pig-meme.jpg" },
     { side: "left", text: "怎样，美吗", emoji: "💅" },
+    { side: "right", text: "之前你喜欢发这种黑脸" },
+    { side: "left", text: "鹅🍐" },
+    { side: "left", emoji: "🔵？" },
+    { side: "left", emoji: "🔵我学的不快乐" },
+    { side: "right", text: "？你是人？" },
+    { side: "left", emoji: "🔵睡觉" },
+    { side: "left", img: "goose-dark.jpg" },
   ],
 
   // ============ 游戏搭子档案（回忆页游戏卡） ============
@@ -115,6 +122,7 @@ const CONFIG = {
     { src: "chat-2.png", cap: "精选语录 · 第二弹" },
     { src: "chat-3.png", cap: "精选语录 · 第三弹" },
     { src: "game-profile.jpg", cap: "秋叶霜战绩页原图" },
+    { src: "goose-dark.jpg", cap: "鹅梨黑脸连招 · 招牌开场白" },
   ],
 
   // 照片墙：把照片放进 assets/photos/，然后把文件名填进来
