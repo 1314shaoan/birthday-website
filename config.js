@@ -75,6 +75,9 @@ const CONFIG = {
     { side: "right", text: "真的，下次你还是和我下五子棋吧，下象棋你老是求和哈哈哈" },
     { side: "left", emoji: "🌚" },
     { side: "left", text: "哼，此仇不报非女子" },
+    { side: "right", text: "也是没有想到，你人小胆肥，竟然喜欢看恐怖片？！" },
+    { side: "left", emoji: "😮‍💨" },
+    { side: "left", text: "看恐怖片怎么了！我那叫勇敢！" },
   ],
 
   // ============ 游戏搭子档案（回忆页游戏卡） ============
