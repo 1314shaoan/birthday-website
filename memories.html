@@ -304,10 +304,6 @@
       </div>
       <div class="game-quote" id="g-quote"></div>
     </div>
-
-    <!-- 大事记时间线（保留） -->
-    <div class="section-label">这一年的大事记</div>
-    <div class="timeline" id="timeline"></div>
   </main>
 
   <script src="config.js"></script>
@@ -411,21 +407,6 @@
     } else {
       document.getElementById("g-photo-block").style.display = "none";
     }
-
-    /* ---- 大事记时间线 ---- */
-    const tl = document.getElementById("timeline");
-    tl.innerHTML = CONFIG.timeline
-      .map(
-        (t) => `
-      <div class="tl-item">
-        <div class="tl-card">
-          <div class="date">${t.date}</div>
-          <h3>${t.title}</h3>
-          <p>${t.text}</p>
-        </div>
-      </div>`
-      )
-      .join("");
   </script>
 </body>
 </html>
