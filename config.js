@@ -69,7 +69,36 @@ const CONFIG = {
     { side: "left", text: "真的要去睡觉 别熬夜" },
     { side: "left", sticker: "无力" },
     { side: "left", emoji: "🫣" },
+    { side: "right", text: "鹅鹅鹅，和你玩了很多游戏，虽然你菜菜的，但我至少不嫌弃你对吧" },
+    { side: "left", emoji: "🤬" },
+    { side: "right", text: "哦对你还是个象棋小高手" },
+    { side: "right", text: "真的，下次你还是和我下五子棋吧，下象棋你老是求和哈哈哈" },
+    { side: "left", emoji: "🌚" },
+    { side: "left", text: "哼，此仇不报非女子" },
   ],
+
+  // ============ 游戏搭子档案（回忆页游戏卡） ============
+  gameProfile: {
+    nickname: "秋叶霜",
+    gameId: "秋叶霜#95703",
+    uid: "ID: 031086011",
+    rank: "青铜I · 20分",
+    level: "Lv84",
+    hours: "398h",
+    kda: "1.28",
+    winRate: "22.2%",
+    acs: "194.5",
+    kast: "65.9%",
+    mainHero: "炼狱",
+    // 最近战绩（result: "胜"/"负"）
+    recent: [
+      { result: "胜", map: "迷核", score: "19/14/7", time: "10-24 21:47" },
+      { result: "负", map: "炼狱", score: "7/18/13", time: "10-24 20:59" },
+      { result: "负", map: "炼狱", score: "14/20/19", time: "10-23 22:15" },
+    ],
+    // 底部吐槽/情话
+    quote: "胜率 22.2%，但快乐 100%。五子棋局已预约，象棋求和次数：保密 🤫",
+  },
 
   // 回忆页时间线（保留在页面底部，往下翻还有这一年的大事记）
   timeline: [
