@@ -88,6 +88,9 @@ const CONFIG = {
     { side: "right", text: "？你是人？" },
     { side: "left", emoji: "🔵睡觉" },
     { side: "left", img: "goose-dark.jpg" },
+    { side: "left", text: "看到这里之后，这个网站就完全是你的了，文件包和附属代码，我都打包给你了，多学习知道吗，学明白了就可以自己添加图片和文字了，傻鹅" },
+    { side: "right", emoji: "🥺" },
+    { side: "right", text: "收到，傻鹅领命 🫡" },
   ],
 
   // ============ 游戏搭子档案（回忆页游戏卡） ============
