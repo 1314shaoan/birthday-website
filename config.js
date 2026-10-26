@@ -96,6 +96,9 @@ const CONFIG = {
       { result: "负", map: "炼狱", score: "7/18/13", time: "10-24 20:59" },
       { result: "负", map: "炼狱", score: "14/20/19", time: "10-23 22:15" },
     ],
+    // 求和实锤照片（放 assets/photos/，留空则隐藏该区块）
+    drawPhoto: "chess-draw.jpg",
+    drawCaption: "「对方请求和棋」—— 象棋桌上的日常，证据已永久保存",
     // 底部吐槽/情话
     quote: "胜率 22.2%，但快乐 100%。五子棋局已预约，象棋求和次数：保密 🤫",
   },

@@ -211,6 +211,27 @@
       text-align: center;
     }
 
+    /* 求和实锤照片 */
+    .game-photo {
+      border-top: 2px solid var(--frame);
+      padding: 14px;
+      background: rgba(255, 248, 238, 0.55);
+      text-align: center;
+    }
+    .game-photo .gp-title { font-size: 0.8rem; font-weight: 800; color: #a0784f; letter-spacing: 1px; margin-bottom: 10px; }
+    .game-photo figure { margin: 0; cursor: zoom-in; display: inline-block; position: relative; }
+    .game-photo img {
+      max-width: 100%;
+      width: 300px;
+      border: 2px solid var(--frame);
+      box-shadow: 4px 4px 0 rgba(31, 19, 12, 0.55);
+      border-radius: 12px;
+      display: block;
+      transition: transform 0.25s;
+    }
+    .game-photo figure:hover img { transform: translateY(-4px) rotate(-1deg); }
+    .game-photo figcaption { font-size: 0.8rem; color: #a0784f; margin-top: 8px; }
+
     /* 输入框装饰条 */
     .chat-input-bar {
       display: flex;
@@ -273,6 +294,13 @@
       <div class="game-recent">
         <div class="gr-title">📋 最近战绩</div>
         <div id="g-recent"></div>
+      </div>
+      <div class="game-photo" id="g-photo-block">
+        <div class="gp-title">📸 求和实锤 · 铁证如山</div>
+        <figure id="g-photo-fig">
+          <img id="g-photo" src="" alt="对方请求和棋" loading="lazy" />
+          <figcaption id="g-photo-cap"></figcaption>
+        </figure>
       </div>
       <div class="game-quote" id="g-quote"></div>
     </div>
@@ -365,6 +393,24 @@
       )
       .join("");
     document.getElementById("g-quote").textContent = GP.quote;
+
+    /* 求和实锤照片（有配图才显示该区块） */
+    if (GP.drawPhoto) {
+      const img = document.getElementById("g-photo");
+      img.src = "assets/photos/" + GP.drawPhoto;
+      document.getElementById("g-photo-cap").textContent = GP.drawCaption || "";
+      document.getElementById("g-photo-fig").addEventListener("click", () => {
+        const lb = document.createElement("div");
+        lb.style.cssText = "position:fixed;inset:0;z-index:300;background:rgba(30,14,4,0.9);display:flex;align-items:center;justify-content:center;padding:24px;cursor:zoom-out;";
+        const big = img.cloneNode();
+        big.style.cssText = "max-width:min(88vw,500px);max-height:82vh;border-radius:12px;border:3px solid #1f130c;box-shadow:0 20px 60px rgba(0,0,0,.6);";
+        lb.appendChild(big);
+        lb.addEventListener("click", () => lb.remove());
+        document.body.appendChild(lb);
+      });
+    } else {
+      document.getElementById("g-photo-block").style.display = "none";
+    }
 
     /* ---- 大事记时间线 ---- */
     const tl = document.getElementById("timeline");
