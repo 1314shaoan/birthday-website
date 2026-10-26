@@ -33,7 +33,45 @@ const CONFIG = {
     "所有的好运正在路上，请签收 🍀",
   ],
 
-  // 回忆页时间线（日期随便写，中文即可）
+  // ============ 回忆页：这一年的表情包聊天记录 ============
+  // 头像：把她的头像/表情包头像图片放进 assets/photos/，填文件名即可显示；
+  // 留空则显示 emojiAvatar 作为占位
+  chatAvatar: "", // 例如 "avatar.jpg"
+  emojiAvatar: "🌸",
+
+  // 聊天记录：side: "left" = 她发的气泡；side: "right" = 对面（你）发的
+  // text: 文字消息；emoji: 大表情；img: 图片文件名（放 assets/photos/）
+  // 想加几条加几条，顺序就是聊天顺序
+  chatMessages: [
+    { side: "right", text: "在干嘛" },
+    { side: "left", text: "谁让你思考了" },
+    { side: "left", emoji: "👌" },
+    { side: "left", text: "不是" },
+    { side: "left", text: "昂" },
+    { side: "right", text: "精准击败率 0.12 也有进步！" },
+    { side: "left", text: "现在我无法选中了" },
+    { side: "left", emoji: "😊" },
+    { side: "left", emoji: "🌚" },
+    { side: "left", text: "就喜欢看", emoji: "😄😄😄😄" },
+    { side: "left", text: "你干嘛", emoji: "🌚" },
+    { side: "left", text: "嘻嘻" },
+    { side: "left", text: "哇塞", emoji: "🤣" },
+    { side: "left", text: "谁让你笑了", emoji: "🌝" },
+    { side: "left", text: "我不玩游戏了" },
+    { side: "left", text: "我游戏了" },
+    { side: "right", text: "可以啊" },
+    { side: "right", emoji: "🙂" },
+    { side: "right", text: "是人？" },
+    { side: "right", text: "不告诉你" },
+    { side: "left", text: "我不说，你自己想办法知道吗" },
+    { side: "right", emoji: "🤐" },
+    { side: "right", text: "逆天" },
+    { side: "left", text: "真的要去睡觉 别熬夜" },
+    { side: "left", sticker: "无力" },
+    { side: "left", emoji: "🫣" },
+  ],
+
+  // 回忆页时间线（保留在页面底部，往下翻还有这一年的大事记）
   timeline: [
     { date: "2007.11.13", title: "你来到这个世界", text: "一个小天使降落人间，故事从这里开始。" },
     { date: "2018.09", title: "我们相遇", text: "命运的齿轮开始转动，感谢那天遇见你。" },

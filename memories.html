@@ -6,58 +6,220 @@
   <title>回忆 · 生日小站</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .section-label {
+    /* ============ 聊天记录风格 ============ */
+    .chat-shell {
+      max-width: 560px;
+      margin: 0 auto;
+      border: 2px solid var(--frame);
+      box-shadow: 6px 6px 0 rgba(31, 19, 12, 0.55);
+      border-radius: 22px;
+      overflow: hidden;
+      background: rgba(255, 244, 227, 0.6);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .chat-head {
       display: flex;
       align-items: center;
-      gap: 14px;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px;
+      background: linear-gradient(90deg, rgba(61,31,14,0.35), rgba(164,85,46,0.3), rgba(61,31,14,0.35));
+      background-size: 200% 100%;
+      animation: flowBg 12s ease-in-out infinite;
+      border-bottom: 2px solid var(--frame);
       color: var(--cream);
-      font-size: 1.35rem;
       font-weight: 800;
-      margin: 60px 0 24px;
-      letter-spacing: 2px;
+      letter-spacing: 1px;
+      text-shadow: 0 1px 4px rgba(31,19,12,0.5);
     }
-    .section-label::before, .section-label::after { content: ""; height: 2px; flex: 1; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent); }
-    .hint-card {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px dashed rgba(255, 255, 255, 0.4);
-      border-radius: 16px;
-      color: rgba(255, 247, 236, 0.85);
-      padding: 18px 22px;
+
+    .chat-body {
+      padding: 20px 16px 24px;
+      max-height: 62vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+    }
+
+    .msg { display: flex; gap: 9px; margin-bottom: 15px; align-items: flex-start; }
+    .msg.right { flex-direction: row-reverse; }
+
+    .avatar {
+      flex: 0 0 38px;
+      width: 38px;
+      height: 38px;
+      border-radius: 8px;
+      border: 2px solid var(--frame);
+      background: linear-gradient(135deg, #ffd9a8, #ff9f6e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      overflow: hidden;
+    }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .msg.me .avatar { background: linear-gradient(135deg, #ffe9b8, #e8952c); }
+
+    .bubble {
+      max-width: 68%;
+      padding: 9px 13px;
+      border-radius: 4px 14px 14px 14px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid var(--frame);
+      box-shadow: 2px 2px 0 rgba(31, 19, 12, 0.5);
+      color: var(--ink);
+      font-size: 0.98rem;
+      line-height: 1.55;
+      word-break: break-word;
+      position: relative;
+    }
+    .msg.right .bubble { border-radius: 14px 4px 14px 14px; background: #ffe9b8; }
+
+    /* 大表情消息：无气泡底 */
+    .bubble.emoji-only {
+      background: none;
+      border: none;
+      box-shadow: none;
+      font-size: 2.3rem;
+      padding: 2px 6px;
+      line-height: 1.2;
+    }
+
+    /* 文字 + 附带小表情 */
+    .bubble .emo { font-size: 1.15em; }
+
+    /* 表情包贴图（如「无力」那种图） */
+    .bubble.sticker {
+      background: rgba(255, 255, 255, 0.92);
+      font-weight: 800;
+      font-size: 1.05rem;
       text-align: center;
-      line-height: 1.8;
-      margin-bottom: 8px;
+      padding: 14px 18px;
     }
-    .hint-card code { background: rgba(255,255,255,0.15); padding: 2px 8px; border-radius: 6px; font-size: 0.9em; }
+    .bubble.sticker .stk-icon { font-size: 1.9rem; display: block; margin-bottom: 4px; }
+
+    .msg.me .bubble { box-shadow: 2px 2px 0 rgba(31, 19, 12, 0.5); }
+
+    /* 图片消息 */
+    .bubble.img-msg { padding: 4px; }
+    .bubble.img-msg img { max-width: 180px; border-radius: 8px; display: block; }
+
+    .chat-foot {
+      text-align: center;
+      font-size: 0.82rem;
+      color: #a0784f;
+      padding: 10px;
+      border-top: 2px dashed rgba(31, 19, 12, 0.35);
+      background: rgba(255, 248, 238, 0.5);
+    }
+
+    /* 输入框装饰条 */
+    .chat-input-bar {
+      display: flex;
+      gap: 8px;
+      padding: 10px 12px;
+      border-top: 2px solid var(--frame);
+      background: rgba(255, 248, 238, 0.65);
+    }
+    .chat-input-bar .fake-input {
+      flex: 1;
+      border: 2px solid var(--frame);
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      color: #b8967a;
+      background: rgba(255,255,255,0.8);
+    }
+    .chat-input-bar .fake-btn {
+      border: 2px solid var(--frame);
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--gold), var(--pink));
+      color: var(--ink);
+      cursor: pointer;
+    }
+
+    /* 时间线区块沿用原有样式，仅调间距 */
+    .section-label { margin-top: 70px; }
   </style>
 </head>
 <body data-title="回忆">
   <main>
-    <h1 class="glitter" style="font-size: clamp(1.8rem, 5vw, 2.6rem);">📷 我们的美好回忆</h1>
-    <p class="subtitle">时间线往下翻，照片墙点开可以放大</p>
+    <h1 class="glitter" style="font-size: clamp(1.8rem, 5vw, 2.6rem);">💌 这一年，收录了你的表情包</h1>
+    <p class="subtitle">每一句「嘻嘻」和「逆天」，都是可爱本身</p>
 
-    <!-- 时间线（由 JS 依据 config.js 渲染） -->
-    <div class="timeline" id="timeline"></div>
-
-    <!-- 照片墙 -->
-    <div class="section-label">照片墙</div>
-    <div class="memories-grid" id="photo-wall"></div>
-    <div class="hint-card" id="photo-hint">
-      把照片放进 <code>assets/photos/</code> 文件夹，再在 <code>config.js</code> 里登记文件名即可上墙。<br />
-      每张照片可以写一句小注释，鼠标悬停会浮现～
+    <!-- 聊天记录 -->
+    <div class="chat-shell flow-reveal">
+      <div class="chat-head">💭 和李梨的聊天日常（精选）</div>
+      <div class="chat-body" id="chat-body"></div>
+      <div class="chat-input-bar">
+        <div class="fake-input">想 TA 的时候，就来看看这段聊天…</div>
+        <button class="fake-btn" id="replay-btn" title="从头再放一遍">↻ 重放</button>
+      </div>
+      <div class="chat-foot">聊天记录共 <b id="msg-count"></b> 条 · 持续更新中…</div>
     </div>
-  </main>
 
-  <!-- 灯箱 -->
-  <div class="lightbox" id="lightbox">
-    <button class="lb-close" id="lb-close">✕</button>
-    <img id="lb-img" src="" alt="回忆照片" />
-    <div class="lb-cap" id="lb-cap"></div>
-  </div>
+    <!-- 大事记时间线（保留） -->
+    <div class="section-label">这一年的大事记</div>
+    <div class="timeline" id="timeline"></div>
+  </main>
 
   <script src="config.js"></script>
   <script src="app.js"></script>
   <script>
-    /* ---- 时间线 ---- */
+    /* ---- 聊天记录渲染 ---- */
+    const chatBody = document.getElementById("chat-body");
+    const AVATAR_HTML = CONFIG.chatAvatar
+      ? `<img src="assets/photos/${CONFIG.chatAvatar}" alt="头像" onerror="this.parentNode.textContent='${CONFIG.emojiAvatar}'" />`
+      : CONFIG.emojiAvatar;
+    const MY_AVATAR = "🎂";
+
+    function bubbleHTML(m) {
+      if (m.img) return `<div class="bubble img-msg"><img src="assets/photos/${m.img}" alt="图片" loading="lazy" onerror="this.remove()" /></div>`;
+      if (m.sticker) return `<div class="bubble sticker"><span class="stk-icon">😤</span>${m.sticker}</div>`;
+      if (m.emoji && !m.text) return `<div class="bubble emoji-only">${m.emoji}</div>`;
+      return `<div class="bubble">${m.text}${m.emoji ? ` <span class="emo">${m.emoji}</span>` : ""}</div>`;
+    }
+
+    let msgs = [];
+    function renderAll() {
+      chatBody.innerHTML = CONFIG.chatMessages
+        .map((m) => {
+          const mine = m.side === "right";
+          return `
+          <div class="msg ${mine ? "right me" : "left"}">
+            <div class="avatar">${mine ? MY_AVATAR : AVATAR_HTML}</div>
+            ${bubbleHTML(m)}
+          </div>`;
+        })
+        .join("");
+      document.getElementById("msg-count").textContent = CONFIG.chatMessages.length;
+    }
+
+    /* 打字机式逐条浮现 */
+    function playChat() {
+      msgs = [...chatBody.children];
+      msgs.forEach((el) => (el.style.display = "none"));
+      let i = 0;
+      const timer = setInterval(() => {
+        if (i >= msgs.length) {
+          clearInterval(timer);
+          return;
+        }
+        const el = msgs[i++];
+        el.style.display = "";
+        el.style.animation = "pageIn 0.4s ease both";
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 180);
+    }
+
+    renderAll();
+    playChat();
+    document.getElementById("replay-btn").addEventListener("click", playChat);
+
+    /* ---- 大事记时间线 ---- */
     const tl = document.getElementById("timeline");
     tl.innerHTML = CONFIG.timeline
       .map(
@@ -71,67 +233,6 @@
       </div>`
       )
       .join("");
-
-    // 滚动入场动画已由 app.js 的 initFlow 统一处理（flow-reveal）
-
-    /* ---- 照片墙 ---- */
-    const wall = document.getElementById("photo-wall");
-    const capText = (p) => (typeof p === "string" ? "" : p.cap || "");
-    const srcOf = (p) => (typeof p === "string" ? "assets/photos/" + p : "assets/photos/" + p.src);
-
-    if (CONFIG.photos.length > 0) {
-      wall.innerHTML = CONFIG.photos
-        .map((p, i) => {
-          const src = srcOf(p);
-          const cap = capText(p);
-          return `
-          <div class="photo-tile" data-i="${i}">
-            <img src="${src}" alt="回忆 ${i + 1}" loading="lazy"
-                 onerror="this.remove()" />
-            ${cap ? `<div class="cap">${cap}</div>` : ""}
-          </div>`;
-        })
-        .join("");
-
-      const lb = document.getElementById("lightbox");
-      const openLb = (i) => {
-        const p = CONFIG.photos[i];
-        document.getElementById("lb-img").src = srcOf(p);
-        document.getElementById("lb-cap").textContent = capText(p) || `回忆 ${i + 1}`;
-        lb.classList.add("open");
-      };
-      wall.addEventListener("click", (e) => {
-        const tile = e.target.closest(".photo-tile");
-        if (!tile) return;
-        const img = tile.querySelector("img");
-        if (img) openLb(+tile.dataset.i);
-        // 文件缺失的瓷砖点击后给出提示
-        else {
-          const hint = document.getElementById("photo-hint");
-          hint.style.background = "rgba(255, 94, 148, 0.35)";
-          setTimeout(() => (hint.style.background = ""), 800);
-        }
-      });
-      document.getElementById("lb-close").onclick = () => lb.classList.remove("open");
-      lb.addEventListener("click", (e) => e.target === lb && lb.classList.remove("open"));
-    } else {
-      // 还没放照片：显示 8 个占位瓷砖
-      wall.innerHTML = Array.from({ length: 8 })
-        .map(
-          (_, i) => `
-        <div class="photo-tile">
-          <div class="tile-placeholder">
-            <div style="font-size: 2rem;">🖼️</div>
-            <div style="font-size: 0.85rem;">照片位 ${i + 1}</div>
-          </div>
-        </div>`
-        )
-        .join("");
-    }
   </script>
-  <style>
-    /* 占位瓷砖补充样式 */
-    .memories-grid .photo-tile { cursor: default; }
-  </style>
 </body>
 </html>
