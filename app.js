@@ -210,6 +210,11 @@ const SITE = (() => {
       { threshold: 0.1 }
     );
     revealTargets.forEach((el) => io.observe(el));
+
+    // 兜底：任何原因（无头/虚拟时钟/IO 失效）导致未浮现的，1.2s 后强制显示
+    setTimeout(() => {
+      document.querySelectorAll(".flow-reveal:not(.show)").forEach((el) => el.classList.add("show"));
+    }, 1200);
   }
 
   /* ---- 页面标题加名字 ---- */

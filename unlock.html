@@ -8,7 +8,7 @@
   <style>
     body { background: linear-gradient(160deg, #2b1206, #8a4520); }
     .unlock-wrap { min-height: calc(100vh - 200px); display: flex; align-items: center; justify-content: center; }
-    .lock-card { max-width: 430px; width: 100%; text-align: center; transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease; }
+    .lock-card { max-width: 430px; width: 100%; text-align: center; border: 2px solid var(--frame); box-shadow: 6px 6px 0 rgba(31, 19, 12, 0.6); transition: opacity 1.2s ease, transform 1.2s ease, filter 1.2s ease; }
     .lock-card h1 { font-size: 1.7rem; color: var(--pink-deep); margin-bottom: 8px; }
     .lock-card .tip { color: #a0784f; font-size: 0.92rem; margin-bottom: 24px; }
     .field { margin-bottom: 16px; text-align: left; }
@@ -17,8 +17,8 @@
       width: 100%;
       padding: 13px 16px;
       border-radius: 14px;
-      border: 2px solid transparent;
-      background: rgba(255, 250, 240, 0.95);
+      border: 2px solid var(--frame);
+      background: rgba(255, 250, 240, 0.85);
       font-size: 1rem;
       color: var(--ink);
       outline: none;

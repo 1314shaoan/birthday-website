@@ -9,7 +9,8 @@
   --gold: #ffd76e;
   --cream: #fff4e3;
   --ink: #4a2c1a;
-  --card: rgba(255, 250, 240, 0.94);
+  --card: rgba(255, 248, 238, 0.66);
+  --frame: #1f130c;
   --shadow: 0 10px 30px rgba(80, 35, 10, 0.35);
 }
 
@@ -122,9 +123,12 @@ h1.glitter {
 
 .card {
   background: var(--card);
+  border: 2px solid var(--frame);
+  box-shadow: 4px 4px 0 rgba(31, 19, 12, 0.55);
   border-radius: 22px;
-  box-shadow: var(--shadow);
   padding: 28px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .btn {
@@ -228,11 +232,14 @@ footer {
 .countdown .unit {
   min-width: 86px;
   padding: 14px 10px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 248, 238, 0.5);
+  border: 2px solid var(--frame);
+  box-shadow: 3px 3px 0 rgba(31, 19, 12, 0.55);
   backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   border-radius: 16px;
   color: var(--cream);
+  text-shadow: 0 1px 4px rgba(31, 19, 12, 0.6);
 }
 
 .countdown .num { font-size: 2rem; font-weight: 800; }
@@ -282,9 +289,12 @@ footer {
   margin: 30px auto 0;
   max-width: 560px;
   background: var(--card);
+  border: 2px solid var(--frame);
+  box-shadow: 4px 4px 0 rgba(31, 19, 12, 0.55);
   border-radius: 22px;
-  box-shadow: var(--shadow);
   padding: 26px 30px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-size: 1.18rem;
   line-height: 1.7;
   min-height: 96px;
@@ -305,7 +315,8 @@ footer {
   border-radius: 18px;
   overflow: hidden;
   cursor: zoom-in;
-  box-shadow: 0 6px 16px rgba(120, 60, 20, 0.3);
+  border: 2px solid var(--frame);
+  box-shadow: 4px 4px 0 rgba(31, 19, 12, 0.55);
   background: linear-gradient(135deg, #f6d5f7, #fbe9d7);
   transition: transform 0.25s;
 }
@@ -355,7 +366,7 @@ footer {
   box-shadow: 0 0 0 4px rgba(255, 94, 148, 0.25);
 }
 
-.tl-card { background: var(--card); border-radius: 18px; box-shadow: var(--shadow); padding: 18px 22px; }
+.tl-card { background: var(--card); border: 2px solid var(--frame); box-shadow: 4px 4px 0 rgba(31, 19, 12, 0.55); border-radius: 18px; padding: 18px 22px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
 
 .tl-card .date { color: var(--pink-deep); font-weight: 800; font-size: 0.88rem; letter-spacing: 1px; }
 .tl-card h3 { margin: 4px 0 6px; font-size: 1.15rem; }
@@ -418,8 +429,11 @@ footer {
   justify-content: center;
   padding: 20px 26px;
   background: var(--card);
+  border: 2px solid var(--frame);
+  box-shadow: 4px 4px 0 rgba(31, 19, 12, 0.55);
   border-radius: 20px;
-  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   font-size: 1.25rem;
   line-height: 1.7;
   color: var(--ink);
@@ -464,10 +478,11 @@ footer {
   background: linear-gradient(135deg, #e8853c, #d9542f);
   color: rgba(255, 255, 255, 0.9);
   font-size: 1.5rem;
-  box-shadow: 0 5px 14px rgba(150, 60, 10, 0.4);
+  border: 2px solid var(--frame);
+  box-shadow: 3px 3px 0 rgba(31, 19, 12, 0.5);
 }
 
-.mcard .back { background: var(--cream); transform: rotateY(180deg); box-shadow: 0 5px 14px rgba(150, 60, 10, 0.25); }
+.mcard .back { background: var(--cream); transform: rotateY(180deg); border: 2px solid var(--frame); box-shadow: 3px 3px 0 rgba(31, 19, 12, 0.5); }
 
 .mcard.matched .front { background: linear-gradient(135deg, #35c97d, #7fe3a9); }
 
@@ -489,13 +504,16 @@ footer {
 .surprise-mask.open { display: flex; }
 
 .surprise-box {
-  background: var(--cream);
+  background: rgba(255, 248, 238, 0.9);
+  border: 3px solid var(--frame);
+  box-shadow: 8px 8px 0 rgba(31, 19, 12, 0.6), 0 24px 70px rgba(0, 0, 0, 0.4);
   border-radius: 26px;
   max-width: 480px;
   width: 100%;
   padding: 38px 32px;
   text-align: center;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   animation: popIn 0.45s cubic-bezier(0.2, 1.4, 0.4, 1);
 }
 
