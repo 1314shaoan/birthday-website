@@ -103,6 +103,14 @@ const CONFIG = {
     quote: "胜率 22.2%，但快乐 100%。五子棋局已预约，象棋求和次数：保密 🤫",
   },
 
+  // 聊天墙下方附加的原图（放 assets/photos/，点击可放大）
+  gallery: [
+    { src: "chat-1.png", cap: "精选语录 · 第一弹" },
+    { src: "chat-2.png", cap: "精选语录 · 第二弹" },
+    { src: "chat-3.png", cap: "精选语录 · 第三弹" },
+    { src: "game-profile.jpg", cap: "秋叶霜战绩页原图" },
+  ],
+
   // 照片墙：把照片放进 assets/photos/，然后把文件名填进来
   // 没放照片也没关系：会自动显示"照片位"占位卡片
   photos: [
