@@ -78,6 +78,9 @@ const CONFIG = {
     { side: "right", text: "也是没有想到，你人小胆肥，竟然喜欢看恐怖片？！" },
     { side: "left", emoji: "😮‍💨" },
     { side: "left", text: "看恐怖片怎么了！我那叫勇敢！" },
+    { side: "right", text: "我也是发现，你最近特别喜欢发这个小猪的表情包" },
+    { side: "left", img: "pig-meme.jpg" },
+    { side: "left", text: "怎样，美吗", emoji: "💅" },
   ],
 
   // ============ 游戏搭子档案（回忆页游戏卡） ============
